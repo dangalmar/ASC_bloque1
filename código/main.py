@@ -1,5 +1,7 @@
 import sys
 from inicialization import initialization, window, calcular_vecinos
+from zdt3 import zdt3
+from reproduction import reproduction, actualization
 
 def leer_archivo(archivo):
     variables = []
@@ -24,18 +26,54 @@ else:
     limite_inferior = float(input("Ingrese un valor para el límite inferior: "))
     limite_superior = float(input("Ingrese un valor para limite_superior: "))
     dimensiones = int(input("Ingrese un valor para dimensiones: "))
-    
 
+z = [None, None]
 vectores_lambda = window(subproblemas)
-#print(vectores_lambda)
+population_list = initialization(subproblemas, limite_inferior, limite_superior, dimensiones)
+
+
+for generacion in range(generaciones):
+    evaluated_functions = []
+    vecindades = calcular_vecinos(vectores_lambda, vecindad)
+
+    for x in population_list:
+        f1, f2 = zdt3(x, dimensiones)
+        evaluated_functions.append([f1, f2])
+
+    for f in evaluated_functions:
+        z = actualization(z, f)
+    
+    print("Generacion "+ str(generacion)+ " con Z: " + str(z))
+
+    for individuo in range(len(population_list)):
+        vecindad_individuo = list(vecindades.items())[individuo][1]
+        nuevo_individuo = reproduction(population_list[individuo], vecindad_individuo, limite_superior, limite_inferior, dimensiones, population_list)
+        f1, f2 = zdt3(nuevo_individuo, dimensiones)
+        evaluated_functions.append([f1, f2])
+        z = actualization(z, [f1, f2])
+        
+
+
+
+
+
+
+
+
+
+
+'''
+vectores_lambda = window(subproblemas)
+print(vectores_lambda)
 
 vecindades = calcular_vecinos(vectores_lambda, vecindad)
-'''
+
 for vector in vecindades.items():
     print(str(vector[0]) + ': '+ str(vector[1]))
-'''
+
 
 population_list = initialization(subproblemas, limite_inferior, limite_superior, dimensiones)
 
 for i in population_list:
     print(i)
+'''

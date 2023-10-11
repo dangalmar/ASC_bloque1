@@ -8,7 +8,7 @@ def window(population):
     lambda_valor = 0
 
     for i in range(population):
-        lambda_window.append((round(lambda_valor, 12), round(1 - lambda_valor, 12)))
+        lambda_window.append((round(lambda_valor, 12), round(1 - lambda_valor, 12), i))
         lambda_valor += step
 
     return lambda_window
