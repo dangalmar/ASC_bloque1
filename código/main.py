@@ -1,7 +1,8 @@
 import sys
+import matplotlib.pyplot as plt
 from inicialization import initialization, window, calcular_vecinos
 from zdt3 import zdt3
-from reproduction import reproduction, actualization
+from reproduction import reproduction, actualization_z, actualization_population
 
 def leer_archivo(archivo):
     variables = []
@@ -27,22 +28,23 @@ else:
     limite_superior = float(input("Ingrese un valor para limite_superior: "))
     dimensiones = int(input("Ingrese un valor para dimensiones: "))
 
+
 z = [None, None]
 vectores_lambda = window(subproblemas)
 population_list = initialization(subproblemas, limite_inferior, limite_superior, dimensiones)
 
+evaluated_functions = []
+vecindades = calcular_vecinos(vectores_lambda, vecindad)
+
+for x in population_list:
+    f1, f2 = zdt3(x, dimensiones)
+    evaluated_functions.append([f1, f2])
+
+for f in evaluated_functions:
+    z = actualization_z(z, f)
+
 
 for generacion in range(generaciones):
-    evaluated_functions = []
-    vecindades = calcular_vecinos(vectores_lambda, vecindad)
-
-    for x in population_list:
-        f1, f2 = zdt3(x, dimensiones)
-        evaluated_functions.append([f1, f2])
-
-    for f in evaluated_functions:
-        z = actualization(z, f)
-    
     print("Generacion "+ str(generacion)+ " con Z: " + str(z))
 
     for individuo in range(len(population_list)):
@@ -50,9 +52,27 @@ for generacion in range(generaciones):
         nuevo_individuo = reproduction(population_list[individuo], vecindad_individuo, limite_superior, limite_inferior, dimensiones, population_list)
         f1, f2 = zdt3(nuevo_individuo, dimensiones)
         evaluated_functions.append([f1, f2])
-        z = actualization(z, [f1, f2])
-        
+        z = actualization_z(z, [f1, f2])
+        population_list = actualization_population(vecindad_individuo, nuevo_individuo, population_list, dimensiones, z, [f1, f2])
 
+valores_finales = []
+for i in range(len(population_list)):
+    f1, f2 = zdt3(population_list[i], dimensiones)
+    print(f"Individuo {i} tiene los valores de funciones {f1}, {f2}")
+    valores_finales.append((f1, f2))
+       
+x, y = zip(*valores_finales)
+
+plt.plot(x, y, marker='o', linestyle='', color='blue', label='Puntos')
+
+plt.xlabel('f1')
+plt.ylabel('f2')
+plt.title('valores zdt3')
+
+plt.legend()
+
+# Mostrar el gráfico
+plt.show()
 
 
 
