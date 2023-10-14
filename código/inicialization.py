@@ -20,17 +20,14 @@ def calcular_vecinos(vectores_lambda, vecindad):
     num_vecinos = round(num_vectores * vecindad)
 
     for i, vector_lambda in enumerate(vectores_lambda):
-        distancia_a_vectores = []  # Almacenar distancias a otros vectores lambda
+        distancia_a_vectores = []  
 
-        # Calcular la distancia euclidiana entre el vector lambda i y todos los demás vectores lambda
         for j, otro_vector_lambda in enumerate(vectores_lambda):
             if i == j:
-                continue  # Saltar la comparación consigo mismo
-
+                continue 
             distancia = np.linalg.norm(np.array(vector_lambda) - np.array(otro_vector_lambda))
             distancia_a_vectores.append((otro_vector_lambda, distancia))
 
-        # Ordenar la lista de distancias y seleccionar los T - 1 más cercanos
         distancia_a_vectores.sort(key=lambda x: x[1])
         vecindad_i = [vec for vec, _ in distancia_a_vectores[:num_vecinos - 1]]
         vecindad_i.append(vector_lambda)
@@ -40,16 +37,34 @@ def calcular_vecinos(vectores_lambda, vecindad):
     return vecindades
  
 
-def initialization(population, upper_limit, lower_limit, dimensions):
+def initialization_zdt3(population, upper_limit, lower_limit, dimensions):
     population_list = []
 
-    for i in range(population):
+    for individual in range(population):
         chromosome = []
-        for i in range(dimensions):
-            alelo = random.uniform(lower_limit, upper_limit)
-            chromosome.append(alelo)
+        for dimension in range(dimensions):
+            allele = random.uniform(lower_limit, upper_limit)
+            chromosome.append(allele)
         population_list.append(chromosome)
 
     print(f"GENERATED {population} INDIVIDUALS WITH {dimensions} CHROMOSOMES")
     
+    return population_list
+
+def initialization_cf6(population, upper_limit_1, lower_limit_1, upper_limit_n, lower_limit_n, dimensions):
+    population_list = []
+
+    for individual in range(population):
+        chromosome = []
+        for dimension in range(dimensions):
+            if dimension == 0:
+                allele =  random.uniform(lower_limit_1, upper_limit_1)
+                chromosome.append(allele)
+            else:
+                allele = random.uniform(lower_limit_n, upper_limit_n)
+                chromosome.append(allele)
+        population_list.append(chromosome)
+
+    print(f"GENERATED {population} INDIVIDUALS WITH {dimensions} CHROMOSOMES")
+
     return population_list

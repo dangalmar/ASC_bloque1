@@ -1,8 +1,10 @@
 import sys
+import math
+import numpy as np
 import matplotlib.pyplot as plt
-from inicialization import initialization, window, calcular_vecinos
+from inicialization import initialization_zdt3, window, calcular_vecinos
 from zdt3 import zdt3
-from reproduction import reproduction, actualization_z, actualization_population
+from reproduction import reproduction_zdt3, actualization_z, actualization_population_zdt3
 
 def leer_archivo(archivo):
     variables = []
@@ -16,8 +18,8 @@ def leer_archivo(archivo):
 if len(sys.argv) > 1:
     archivo = sys.argv[1]
     try:
-        subproblemas, generaciones, vecindad, limite_inferior, limite_superior, dimensiones = leer_archivo(archivo)
-        subproblemas, generaciones, vecindad, limite_inferior, limite_superior, dimensiones = int(subproblemas), int(generaciones), float(vecindad), float(limite_inferior), float(limite_superior), int(dimensiones)
+        subproblemas, generaciones, vecindad, limite_inferior, limite_superior, dimensiones, factor_cruce, factor_mutacion = leer_archivo(archivo)
+        subproblemas, generaciones, vecindad, limite_inferior, limite_superior, dimensiones, factor_cruce, factor_mutacion = int(subproblemas), int(generaciones), float(vecindad), float(limite_inferior), float(limite_superior), int(dimensiones), float(factor_cruce), float(factor_mutacion)
     except FileNotFoundError:
         print(f"El archivo '{archivo}' no existe.")
 else:
@@ -25,13 +27,15 @@ else:
     generaciones = int(input("Ingrese un valor para numero de generaciones: "))
     vecindad = float(input("Ingrese un valor para vecindad: "))
     limite_inferior = float(input("Ingrese un valor para el límite inferior: "))
-    limite_superior = float(input("Ingrese un valor para limite_superior: "))
+    limite_superior = float(input("Ingrese un valor para el limite superior: "))
     dimensiones = int(input("Ingrese un valor para dimensiones: "))
+    factor_cruce = int(input("Ingrese un valor para el factor de cruce: "))
+    factor_mutacion = int(input("Ingrese un valor para el factor de mutacion: "))
 
 
 z = [None, None]
 vectores_lambda = window(subproblemas)
-population_list = initialization(subproblemas, limite_inferior, limite_superior, dimensiones)
+population_list = initialization_zdt3(subproblemas, limite_inferior, limite_superior, dimensiones)
 
 evaluated_functions = []
 vecindades = calcular_vecinos(vectores_lambda, vecindad)
@@ -49,11 +53,22 @@ for generacion in range(generaciones):
 
     for individuo in range(len(population_list)):
         vecindad_individuo = list(vecindades.items())[individuo][1]
-        nuevo_individuo = reproduction(population_list[individuo], vecindad_individuo, limite_superior, limite_inferior, dimensiones, population_list)
+        nuevo_individuo = reproduction_zdt3(population_list[individuo], vecindad_individuo, limite_superior, limite_inferior, dimensiones, population_list, factor_cruce, factor_mutacion)
         f1, f2 = zdt3(nuevo_individuo, dimensiones)
-        evaluated_functions.append([f1, f2])
         z = actualization_z(z, [f1, f2])
-        population_list = actualization_population(vecindad_individuo, nuevo_individuo, population_list, dimensiones, z, [f1, f2])
+        population_list = actualization_population_zdt3(vecindad_individuo, nuevo_individuo, population_list, dimensiones, z, [f1, f2])
+
+def funcion_zdt(x):
+    return 1 - math.sqrt(x) - x * math.sin(10 * math.pi * x)
+
+# Crea un conjunto de puntos x en el rango [0, 1]
+x = np.linspace(0, 1, 400)
+
+# Calcula la función a trozos en cada punto de x
+y = [funcion_zdt(xi) for xi in x]
+
+# Dibuja la función a trozos
+plt.plot(x, y, label='Función a Trozos', color='blue')
 
 valores_finales = []
 for i in range(len(population_list)):
@@ -63,7 +78,7 @@ for i in range(len(population_list)):
        
 x, y = zip(*valores_finales)
 
-plt.plot(x, y, marker='o', linestyle='', color='blue', label='Puntos')
+plt.plot(x, y, marker='o', linestyle='', color='green', label='Puntos')
 
 plt.xlabel('f1')
 plt.ylabel('f2')
