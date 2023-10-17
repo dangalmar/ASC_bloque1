@@ -55,6 +55,7 @@ def actualization_population_zdt3(vecindad_individuo, nuevo_individuo, populatio
             gte_x_1 = gte_x_2
         if gte_y_1 <= gte_x_1:
             population_list[vecino[2]] = nuevo_individuo
+            break
     
     return population_list
 
@@ -63,7 +64,7 @@ def actualization_population_cf6(vecindad_individuo, nuevo_individuo, population
         f1t, f2t = cf6(population_list[vecino[2]], dimensions)
         constraint_1, constraint_2 = cf6_constraint_1(population_list[vecino[2]], dimensions), cf6_constraint_2(population_list[vecino[2]], dimensions)
         valor_restriccion =  abs(constraint_1) + abs(constraint_2)
-        f1t, f2t = f1t + 0.5 * valor_restriccion, f2t + 0.5 * valor_restriccion
+        f1t, f2t = f1t + valor_restriccion, f2t + valor_restriccion
         gte_y_1 = vecino[0] * abs(f[0] - z[0])
         gte_y_2 = vecino[1] * abs(f[1] - z[1])
         gte_x_1 = vecino[0] * abs(f1t - z[0])
@@ -74,6 +75,7 @@ def actualization_population_cf6(vecindad_individuo, nuevo_individuo, population
             gte_x_1 = gte_x_2
         if gte_y_1 <= gte_x_1:
             population_list[vecino[2]] = nuevo_individuo
+            break
     
     return population_list
 
@@ -97,7 +99,9 @@ def actualization_population_cf6_selection(vecindad_individuo, nuevo_individuo, 
                 gte_x_1 = gte_x_2
             if gte_y_1 <= gte_x_1:
                 population_list[vecino[2]] = nuevo_individuo
+                break
         elif constraint_individuo == 0 or constraint_individuo < constraint_j:
             population_list[vecino[2]] = nuevo_individuo
+            break
 
     return population_list

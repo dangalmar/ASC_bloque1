@@ -44,6 +44,9 @@ vecindades = calcular_vecinos(vectores_lambda, vecindad)
 
 for x in population_list:
     f1, f2 = cf6(x, dimensiones)
+    constraint_1, constraint_2 = cf6_constraint_1(x, dimensiones), cf6_constraint_2(x, dimensiones)
+    valor_restriccion = abs(constraint_1) + abs(constraint_2)
+    f1, f2 = f1 + valor_restriccion, f2 + valor_restriccion
     evaluated_functions.append([f1, f2])
 
 for f in evaluated_functions:
@@ -54,12 +57,13 @@ for generacion in range(generaciones):
 
     for individuo in range(len(population_list)):
         vecindad_individuo = list(vecindades.items())[individuo][1]
-        nuevo_individuo = reproduction_cf6(population_list[individuo], vecindad_individuo, limite_superior_1, limite_inferior_1, limite_inferior_n, limite_inferior_n, dimensiones, population_list, factor_cruce, factor_mutacion)
+        nuevo_individuo = reproduction_cf6(population_list[individuo], vecindad_individuo, limite_superior_1, limite_inferior_1, limite_superior_n, limite_inferior_n, dimensiones, population_list, factor_cruce, factor_mutacion)
         f1, f2 = cf6(nuevo_individuo, dimensiones)
         if violation == 0:
             constraint_1, constraint_2 = cf6_constraint_1(nuevo_individuo, dimensiones), cf6_constraint_2(nuevo_individuo, dimensiones)
             valor_restriccion = abs(constraint_1) + abs(constraint_2)
-            f1, f2 = f1 + 0.5 * valor_restriccion, f2 + 0.5 * valor_restriccion
+            f1, f2 = f1 + valor_restriccion, f2 + valor_restriccion
+            #print(f"El valor de restriccion es {valor_restriccion} con f1 = {f1} y f2 = {f2}")
             z = actualization_z(z, [f1, f2])
             population_list = actualization_population_cf6(vecindad_individuo, nuevo_individuo, population_list, dimensiones, z, [f1, f2])
         else:
