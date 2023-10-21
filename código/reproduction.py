@@ -79,13 +79,11 @@ def actualization_population_cf6(vecindad_individuo, nuevo_individuo, population
     
     return population_list
 
-def actualization_population_cf6_selection(vecindad_individuo, nuevo_individuo, population_list, dimensions, z, f):
+def actualization_population_cf6_selection(vecindad_individuo, nuevo_individuo, population_list, dimensions, z, f, constraint_individuo_f1, constraint_individuo_f2):
     for vecino in vecindad_individuo:
         f1t, f2t = cf6(population_list[vecino[2]], dimensions)
         constraint_j_f1 = cf6_constraint_1(population_list[vecino[2]], dimensions)
         constraint_j_f2 = cf6_constraint_2(population_list[vecino[2]], dimensions)
-        constraint_individuo_f1 = cf6_constraint_1(nuevo_individuo, dimensions)
-        constraint_individuo_f2 = cf6_constraint_2(nuevo_individuo, dimensions)
         constraint_j = abs(constraint_j_f1) + abs(constraint_j_f2)
         constraint_individuo = abs(constraint_individuo_f1) + abs(constraint_individuo_f2)
         if constraint_j == 0 and constraint_individuo == 0:
@@ -103,5 +101,6 @@ def actualization_population_cf6_selection(vecindad_individuo, nuevo_individuo, 
         elif constraint_individuo == 0 or constraint_individuo < constraint_j:
             population_list[vecino[2]] = nuevo_individuo
             break
+            
 
     return population_list
