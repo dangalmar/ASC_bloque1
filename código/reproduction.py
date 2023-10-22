@@ -13,6 +13,10 @@ def reproduction_zdt3(individuo, vecinos, upper_limit, lower_limit, dimensions, 
             mutated = np.clip(mutated, lower_limit, upper_limit)
         else:
             mutated = individuo[dimension]
+            
+        if random.uniform(0, 1) <= 1 / dimensions:
+            mutated = mutated + np.random.normal(loc=0, scale=(upper_limit-lower_limit)/20)
+            mutated = np.clip(mutated, lower_limit, upper_limit)
         chromosome_mutated.append(mutated)
 
     return chromosome_mutated
@@ -30,6 +34,15 @@ def reproduction_cf6(individuo, vecinos, upper_limit_1, lower_limit_1, upper_lim
                 mutated = np.clip(mutated, lower_limit_n, upper_limit_n)
         else:
             mutated = individuo[dimension]
+
+        if random.uniform(0, 1) <= 1 / dimensions:
+            if dimension == 0:
+                mutated = mutated + np.random.normal(loc=0, scale=(upper_limit_1-lower_limit_1)/20)
+                mutated = np.clip(mutated, lower_limit_1, upper_limit_1)
+            else:
+                mutated = mutated + np.random.normal(loc=0, scale=(upper_limit_n-lower_limit_n)/20)
+                mutated = np.clip(mutated, lower_limit_n, upper_limit_n)
+        
         chromosome_mutated.append(mutated)
 
     return chromosome_mutated

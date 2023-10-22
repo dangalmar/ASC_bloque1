@@ -38,6 +38,7 @@ lista_f1 = []
 lista_f2 = []
 lista_cv = []
 vectores_lambda = window(subproblemas)
+
 population_list = initialization_zdt3(subproblemas, limite_inferior, limite_superior, dimensiones)
 
 evaluated_functions = []
