@@ -1,0 +1,6 @@
+for j in 01 02 03 04 05 06 07 08 09 10
+do
+cp ../resultados/CF6_4D/EVAL10000/P200G50/cf6_4d_all_popmp200g50_seed$j.out Comparacion/cf6_4d_all_popmp200g50.out
+cp ../resultados/CF6_4D_AGR/EVAL10000/P200G50/cf6_4d_selection_all_popmp200g50_seed$j.out Comparacion/cf6_4d_agr_all_popmp200g50.out
+./metrics < Cf6_4d_p200g50vspCf6_4d_Agr_p200g50stallCS.in
+done

@@ -102,7 +102,6 @@ plt.title('valores zdt3')
 
 plt.legend()
 
-# Mostrar el gráfico
 plt.show()
 
 '''
@@ -114,7 +113,7 @@ with open(ruta_archivo_all, 'w') as archivo:
         archivo.write(f"{f1:0.6e}   {f2:0.6e}   {cv:0.6e} \n")
 
 with open(ruta_archivo_final, 'w') as archivo:
-    for f1, f2, cv, individuo in zip(lista_f1, lista_f2, lista_cv, population_list):
+    for f1, f2, cv, individuo in zip(lista_f1_final, lista_f2_final, lista_cv, population_list):
         archivo.write(f"{f1:0.6e}   {f2:0.6e}   ")
         for alelo in individuo:
             archivo.write(f"{alelo:0.6e}    ")
@@ -122,7 +121,6 @@ with open(ruta_archivo_final, 'w') as archivo:
 
 print("\n Los datos se han escrito en", ruta_archivo_all, ruta_archivo_final)
 '''
-
 
 
 

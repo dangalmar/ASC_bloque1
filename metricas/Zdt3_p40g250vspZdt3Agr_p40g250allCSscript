@@ -1,0 +1,6 @@
+for j in 01 02 03 04 05 06 07 08 09 10
+do
+cp ../resultados/ZDT3/EVAL10000/P40G250/zdt3_all_popmp40g250_seed$j.out Comparacion/zdt3_all_popmp40g250.out
+cp ../resultados/ZDT3_AGR/EVAL10000/P40G250/zdt3_all_popmp40g250_seed$j.out Comparacion/zdt3_agr_all_popmp40g250.out
+./metrics < Zdt3_p40g250vspZdt3Agr_p40g250stallCS.in
+done

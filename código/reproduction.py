@@ -13,7 +13,7 @@ def reproduction_zdt3(individuo, vecinos, upper_limit, lower_limit, dimensions, 
             mutated = np.clip(mutated, lower_limit, upper_limit)
         else:
             mutated = individuo[dimension]
-            
+
         if random.uniform(0, 1) <= 1 / dimensions:
             mutated = mutated + np.random.normal(loc=0, scale=(upper_limit-lower_limit)/20)
             mutated = np.clip(mutated, lower_limit, upper_limit)
@@ -68,7 +68,7 @@ def actualization_population_zdt3(vecindad_individuo, nuevo_individuo, populatio
             gte_x_1 = gte_x_2
         if gte_y_1 <= gte_x_1:
             population_list[vecino[2]] = nuevo_individuo
-            break
+            
     
     return population_list
 
@@ -88,7 +88,7 @@ def actualization_population_cf6(vecindad_individuo, nuevo_individuo, population
             gte_x_1 = gte_x_2
         if gte_y_1 <= gte_x_1:
             population_list[vecino[2]] = nuevo_individuo
-            break
+            
     
     return population_list
 
@@ -110,10 +110,8 @@ def actualization_population_cf6_selection(vecindad_individuo, nuevo_individuo, 
                 gte_x_1 = gte_x_2
             if gte_y_1 <= gte_x_1:
                 population_list[vecino[2]] = nuevo_individuo
-                break
+                
         elif constraint_individuo == 0 or constraint_individuo < constraint_j:
             population_list[vecino[2]] = nuevo_individuo
-            break
             
-
     return population_list

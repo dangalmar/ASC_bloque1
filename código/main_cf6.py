@@ -91,10 +91,17 @@ y = [funcion_a_trozos(xi) for xi in x]
 
 plt.plot(x, y, label='Función a Trozos', color='blue')
 
+
+lista_f1_final=[]
+lista_f2_final=[]
+lista_cv_final=[]
 valores_finales_cumplen = []
 valores_finales_no_cumplen = []
 for i in range(len(population_list)):
     f1, f2 = cf6(population_list[i], dimensiones)
+    lista_f1_final.append(f1)
+    lista_f2_final.append(f2)
+    lista_cv_final.append(0.0)
     constraint_1, constraint_2 = cf6_constraint_1(nuevo_individuo, dimensiones), cf6_constraint_2(nuevo_individuo, dimensiones)
     valor_restriccion = abs(constraint_1) + abs(constraint_2)
     print(f"Individuo {i} tiene los valores de funciones {f1}, {f2}")
@@ -117,19 +124,18 @@ plt.title('valores cf6')
 
 plt.legend()
 
-# Mostrar el gráfico
 plt.show()
 
 '''
-ruta_archivo_all = '../resultados/CF6_16D_AGR/EVAL4000/P100G40/cf6_16d_selection_all_popmp100g40_seed10.out'
-ruta_archivo_final = '../resultados/CF6_16D_AGR/EVAL4000/P100G40/cf6_16d_selection_final_popp100g40_seed10.out'
+ruta_archivo_all = '../resultados/CF6_16D_AGR/EVAL4000/P100G40/cf6_16d_penalty_all_popmp100g40_seed01.out'
+ruta_archivo_final = '../resultados/CF6_16D_AGR/EVAL4000/P100G40/cf6_16d_penalty_final_popp100g40_seed01.out'
 
 with open(ruta_archivo_all, 'w') as archivo:
     for f1, f2, cv in zip(lista_f1, lista_f2, lista_cv):
         archivo.write(f"{f1:0.6e}   {f2:0.6e}   {cv:0.6e} \n")
 
 with open(ruta_archivo_final, 'w') as archivo:
-    for f1, f2, cv, individuo in zip(lista_f1, lista_f2, lista_cv, population_list):
+    for f1, f2, cv, individuo in zip(lista_f1_final, lista_f2_final, lista_cv_final, population_list):
         archivo.write(f"{f1:0.6e}   {f2:0.6e}   ")
         for alelo in individuo:
             archivo.write(f"{alelo:0.6e}    ")
